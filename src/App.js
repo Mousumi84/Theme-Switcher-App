@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState,useEffect,createContext } from "react";
+import NavBar from "./Nav";
+import ContentBox from "./Content";
+
+export const ThemeContext=createContext();
+
+const colors={
+  light: {
+    color: "#23272f",
+    background: "white",
+
+  },
+
+  dark: {
+    color: "white",
+    background: "#23272f",
+
+  }
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [theme,setTheme]=useState("dark");
+
+  useEffect(() => {
+    Object.assign(document.body.style,colors[theme]);
+  },[theme]);
+
+  function toggleTheme(){
+    setTheme(theme==="light" ? "dark" : "light")
+  }
+
+  return ( <>
+    <ThemeContext.Provider value={{theme,toggleTheme,colors}}>
+      <NavBar />
+      <ContentBox />
+    </ThemeContext.Provider>
+    
+    </>)
 }
+
 
 export default App;
